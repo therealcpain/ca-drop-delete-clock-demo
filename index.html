@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CA DROP Delete Clock — paste submit date → 45/90-day broker cycle literacy</title>
+  <meta name="description" content="Paste California resident? yes/no, DROP request submit date (or not submitted), and view date. One shareable card: eligible to file / waiting for broker cycle / inside 45-day processing window / up-to-90-day status lag / not CA-eligible. Aug 1 2026 + November 2026 chips. Cite privacy.ca.gov/drop. Not legal advice. Not a paid removal service.">
+  <meta name="theme-color" content="#0b0f14">
+  <meta property="og:title" content="CA DROP Delete Clock">
+  <meta property="og:description" content="Paste your DROP submit date — inside the 45/90-day window? Official DROP only. Not legal advice.">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="site">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">45d</div>
+        <div>
+          <h1>CA DROP Delete Clock</h1>
+          <p class="tagline">Paste CA + submit date → eligible / waiting / 45-day / 90-day lag · share card.</p>
+        </div>
+      </div>
+      <span class="badge">Not legal advice</span>
+    </header>
+
+    <aside class="myth-banner" role="note">
+      <strong>Disclaimer.</strong>
+      This card is <em>timeline literacy</em> —
+      <strong>not</strong> legal advice, <strong>not</strong> a paid data-removal service, and <strong>not</strong> a DROP account tool.
+      <strong>Official DROP only</strong> at
+      <a href="https://privacy.ca.gov/drop/" target="_blank" rel="noopener noreferrer">privacy.ca.gov/drop</a>.
+      We <strong>never submit on your behalf</strong>, never ask for SSN, and <strong>never invent</strong> a broker’s Deleted / Exempted / Not found status.
+      CA residents only. Public framing: <strong>Aug&nbsp;1&nbsp;2026</strong> brokers begin processing and must access DROP <strong>at least once every 45 days</strong>; status updates may take <strong>up to 90 days</strong>; <strong>November&nbsp;2026</strong> — first full download/upload cycle should complete.
+      Sources:
+      <a href="https://privacy.ca.gov/drop/" target="_blank" rel="noopener noreferrer">privacy.ca.gov/drop</a>
+      ·
+      <a href="https://cppa.ca.gov/data_brokers/" target="_blank" rel="noopener noreferrer">cppa.ca.gov/data_brokers</a>
+      ·
+      <a href="https://privacy.ca.gov/drop-for-data-brokers/process-drop-requests/" target="_blank" rel="noopener noreferrer">DROP broker process</a>.
+    </aside>
+
+    <section class="panel lookup" aria-labelledby="lookup-heading">
+      <h2 id="lookup-heading">1. Paste your DROP status</h2>
+      <p class="hint">
+        User paste only — <strong>no</strong> DROP account scrape, <strong>never</strong> ask SSN.
+        If you submitted, paste the <strong>submit date</strong> from your confirmation. Empty or missing dates → honest miss (we will not invent a timeline).
+      </p>
+
+      <div class="field-grid four">
+        <div>
+          <label for="caResident">California resident?</label>
+          <select id="caResident">
+            <option value="">Select…</option>
+            <option value="yes">Yes — CA resident</option>
+            <option value="no">No — not CA</option>
+          </select>
+        </div>
+        <div>
+          <label for="submitStatus">DROP request submitted?</label>
+          <select id="submitStatus">
+            <option value="not_submitted">Not submitted</option>
+            <option value="submitted">Submitted — I have a date</option>
+          </select>
+        </div>
+        <div id="submitDateWrap">
+          <label for="submitDate">Submit date (if submitted)</label>
+          <input id="submitDate" type="date" />
+        </div>
+        <div>
+          <label for="viewDate">View date (when you’re looking)</label>
+          <input id="viewDate" type="date" required />
+        </div>
+      </div>
+      <div class="field-grid" style="margin-top:0.75rem">
+        <div>
+          <label for="noteLabel">Note label (optional)</label>
+          <input id="noteLabel" type="text" maxlength="64" placeholder="e.g. Redacted · family chat" autocomplete="off" />
+        </div>
+      </div>
+
+      <div class="actions">
+        <button type="button" class="btn btn-primary" id="cardBtn">Show delete clock</button>
+        <button type="button" class="btn" id="clearBtn">Clear</button>
+      </div>
+      <p class="status" id="status" aria-live="polite"></p>
+
+      <h3 class="subhead">Seed examples (teaching dates)</h3>
+      <div class="seed-chips" id="seedChips" role="list" aria-label="Seed CA DROP Delete Clock examples"></div>
+    </section>
+
+    <section class="panel card-panel" aria-labelledby="card-heading" id="cardSection" hidden>
+      <div class="card-toolbar">
+        <h2 id="card-heading">2. Shareable delete clock</h2>
+        <div class="actions">
+          <button type="button" class="btn" id="copySummary">Copy summary</button>
+          <button type="button" class="btn" id="shareBtn">Share link</button>
+          <button type="button" class="btn" id="pngBtn">Export PNG</button>
+        </div>
+      </div>
+
+      <!-- PRIMARY VISUAL: timeline card — giant status + 45/90 bars -->
+      <article class="renewal-card" id="deadlineCard" aria-labelledby="dlHeadline">
+        <header class="card-head">
+          <div>
+            <p class="brand-line">CA DROP Delete Clock</p>
+            <p class="meta-line" id="cardMeta">—</p>
+            <h3 id="dlHeadline">Where are you vs the 45/90-day window?</h3>
+          </div>
+          <div class="verdict" id="statusBadge">
+            <span class="verdict-k" id="statusPill">—</span>
+            <span class="verdict-s" id="statusSub">Text-labeled · not color-only</span>
+          </div>
+        </header>
+
+        <div class="hero-row">
+          <div class="hero-stat cy-lead">
+            <span class="hero-kicker">Your DROP clock</span>
+            <div class="face-allin-line" aria-label="Status badge">
+              <span class="face-was"><span class="face-was-k">View date</span> <span id="viewDateDisp">—</span></span>
+              <span class="face-arrow" aria-hidden="true">→</span>
+              <span class="hero-value" id="daysDisp">—</span>
+            </div>
+            <span class="hero-sub" id="deadlineLine">privacy.ca.gov/drop</span>
+          </div>
+          <div class="hero-stat fee ring-stat">
+            <span class="hero-kicker">Status badge</span>
+            <div class="ring-wrap" aria-hidden="true">
+              <div class="fee-ring" id="daysRing" style="--pct:0"></div>
+              <div class="ring-center">
+                <span class="hero-value" id="daysRingDisp">—</span>
+              </div>
+            </div>
+            <span class="hero-sub" id="windowLine">—</span>
+          </div>
+        </div>
+
+        <p class="look-enroll-flag" id="actionFlag" aria-live="polite">—</p>
+
+        <p class="look-enroll-flag warn" id="augChip" aria-live="polite">
+          Aug 1 2026 — brokers must access DROP ≥ every 45 days
+        </p>
+        <p class="look-enroll-flag ok" id="novChip" aria-live="polite">
+          November 2026 — first full download/upload cycle should complete
+        </p>
+
+        <div id="barsWrap" class="bars-wrap" hidden>
+          <div class="bar-block">
+            <div class="bar-label" id="bar45Label">45-day access cycle</div>
+            <div class="bar-track" role="img" aria-label="45-day cycle progress">
+              <div class="bar-fill bar-45" id="bar45Fill" style="width:0%"></div>
+            </div>
+          </div>
+          <div class="bar-block">
+            <div class="bar-label" id="bar90Label">Up-to-90-day status lag</div>
+            <div class="bar-track" role="img" aria-label="90-day lag progress">
+              <div class="bar-fill bar-90" id="bar90Fill" style="width:0%"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="receipt-strip four" id="receiptStrip" aria-label="Status breakdown">
+          <div class="r-item"><span class="r-k">CA resident</span><span class="r-v" id="rCa">—</span></div>
+          <div class="r-item"><span class="r-k">Submitted</span><span class="r-v" id="rSubmit">—</span></div>
+          <div class="r-item"><span class="r-k">Processing start</span><span class="r-v" id="rProcess">—</span></div>
+          <div class="r-item"><span class="r-k">View date</span><span class="r-v" id="rView">—</span></div>
+        </div>
+
+        <p class="decoder-line" id="decoderLine">—</p>
+        <p class="action-line" id="actionLine">—</p>
+        <p class="cite-line" id="citeLine">—</p>
+
+        <footer class="card-foot">
+          <span>User-pasted dates · no DROP scrape · never ask SSN</span>
+          <span>Not legal advice · official DROP only · we never submit on your behalf</span>
+        </footer>
+      </article>
+
+      <div class="share-box" id="shareBox" hidden>
+        <label for="shareUrl">Share URL (hash restores your pasted fields)</label>
+        <div class="row">
+          <input id="shareUrl" type="text" readonly />
+          <button type="button" class="btn" id="copyShare" style="flex:0 0 auto">Copy</button>
+        </div>
+        <p class="hint">Append UTM when you post, e.g. <code>?utm_source=reddit&amp;utm_medium=organic&amp;utm_campaign=ca_drop_delete_clock_mvp</code></p>
+      </div>
+
+      <div class="source-links" id="sourceLinks"></div>
+    </section>
+
+    <section class="panel legend" aria-labelledby="legend-heading">
+      <h2 id="legend-heading">How to read the card</h2>
+      <ul class="legend-list">
+        <li><span class="pill allin">eligible to file</span> CA resident + not submitted → file free at <strong>privacy.ca.gov/drop</strong>. We never submit on your behalf.</li>
+        <li><span class="pill fee">waiting for broker cycle</span> Submitted, view before <strong>Aug&nbsp;1&nbsp;2026</strong> — processing starts that date; brokers must access ≥ every 45 days.</li>
+        <li><span class="pill claim">inside 45-day processing window</span> View ≥ Aug 1 · days since later-of(submit, Aug&nbsp;1) &lt; 45.</li>
+        <li><span class="pill claim">up-to-90-day status lag</span> Days since processing start ≥ 45 — official page: status updates may take <strong>up to 90 days</strong>. We never invent Deleted / Exempted / Not found.</li>
+        <li><span class="pill">not CA-eligible</span> DROP is for California residents only.</li>
+        <li><strong>Chips</strong> Aug 1 2026 broker-access rule · November 2026 first full-cycle milestone — each chip restates <em>in N days / today / N days ago</em> from your view date (text, not color-only).</li>
+        <li><strong>Pointer</strong> privacy.ca.gov/drop only. Not a paid removal service.</li>
+        <li><strong>Empty dates</strong> = honest miss. No invented timeline.</li>
+      </ul>
+    </section>
+
+    <footer>
+      <strong>CA DROP Delete Clock</strong> — timeline-honest share card for California DROP.
+      <ul>
+        <li>CA yes/no · submit date or not submitted · view date → status literacy</li>
+        <li>User paste only · zero scrape · never ask SSN · not legal advice · not a paid removal service</li>
+        <li>Free utility · ad-supported path (see README) · hard-avoid paid data-removal affiliates</li>
+      </ul>
+    </footer>
+    <canvas id="pngCanvas" width="900" height="1180" hidden aria-hidden="true"></canvas>
+  </div>
+</body>
+</html>
